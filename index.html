@@ -1,0 +1,394 @@
+<!DOCTYPE html><html lang="fi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pikaopas TinCompin käyttöön</title><style>body{font-family:Arial,sans-serif;margin:0;display:flex}.sidebar{width:200px;background-color:#f4f4f4;padding:15px;height:100vh;box-shadow:2px 0 5px rgba(0,0,0,.1);position:fixed}.sidebar a{text-decoration:none;color:#000;display:block;padding:10px 0;cursor:pointer}.sidebar a:hover{background-color:#ddd}.content{margin-left:250px;padding:20px;max-width:800px}pre{background-color:#eee;padding:10px;overflow-x:auto}code{font-family:'Courier New',Courier,monospace}h1,h2,h3{color:#333}h1{margin-top:0}.section-content{display:none}</style></head><body>
+    <div class="sidebar">
+        <h2>Sisällys</h2>
+        <a onclick="showContent('esivaatimukset')">Pääsivu</a>
+        <a onclick="showContent('kaantaja_kaytto1')">Kääntäjän käyttö 1</a>
+        <a onclick="showContent('kaantaja_kaytto2')">Kääntäjän käyttö 2</a>
+        <a onclick="showContent('opas_kieli')">Opas - ohjelmointikieli</a>
+        <a onclick="showContent('standardikirjasto')">Opas - Standardikirjasto</a>
+        <a onclick="showContent('miniesimerkki')">Showcase</a>
+        <a onclick="showContent('sudenkuopat')">Yleisimmät sudenkuopat</a>
+        <a onclick="showContent('vinkki')">Pieni vinkki!</a>
+        
+    </div>
+
+    <div class="content">
+        <div id="esivaatimukset" class="section-content"><h1 id="tincomp">TinComp</h1>
+<p><em>A small experimental systems programming language and native compiler for AMD64.</em></p>
+<hr>
+<p>TinComp is an experimental imperative programming language together with a native compiler written entirely in Python.</p>
+<p>The compiler translates source code into AMD64 assembly.</p>
+<p>The project was created primarily as a learning project in compiler construction and systems programming.</p>
+<p>TinComp is under still development and it is not a production ready software although the compiler should be mainly functional.</p>
+<p>Unfortunaltely TinComp's manual is in Finnish.</p>
+<hr>
+<h3 id="highlights">Highlights</h3>
+<p>✓ Native AMD64 code generation</p>
+<p>✓ Runtime library</p>
+<p>✓ Arrays</p>
+<p>✓ Structs</p>
+<p>✓ Strings</p>
+<p>✓ Basic compiler optimizations</p>
+<p>✓ Extensive end-to-end testing</p>
+<hr>
+            <p>Tarvitset:</p>
+            <ul>
+                <li>GNU/Linux-ympäristön (AMD64/x86-64)</li>
+                <li>Pythonin (projektin dokumentaation mukaan vähintään 3.11)</li>
+                <li>järjestelmän assemblerin (esim. GNU as), joka löytyy yleensä valmiina Linuxista</li>
+            </ul>
+        </div>
+        
+        <div id="kaantaja_kaytto1" class="section-content">
+            <h2>Kääntäjän käyttö 1</h2>
+            <p>Projektin juuresta voit ajaa kääntäjän suoraan:</p>
+            <pre><code>./tincomp ohjelma.tin ohjelma</code></pre>
+            <p>- tuottaa suoritettavan binäärin <code>ohjelma</code></p>
+            <pre><code>./tincomp ohjelma.tin ohjelma.s -S</code></pre>
+            <p>- tuottaa vain assembly-tiedoston <code>ohjelma.s</code></p>
+        </div>
+
+        <div id="kaantaja_kaytto2" class="section-content">
+            <h2>Kääntäjän käyttö 2</h2>
+            <p>1. Kirjoita lähdekoodi tiedostoon, esim. `hello.tin`</p>
+			<p>2. Käännä:</p>
+			<pre><code>./compile hello.tin hello</code></pre>
+			<p>3. Aja ohjelma:</p>
+			<pre><code>./hello</code></pre>
+			<p>Jos haluat tutkia kääntäjän tuottamaa assemblyä:</p>
+			<pre><code>./compile hello.tin hello.s -S</code></pre>
+        </div>
+
+        <div id="miniesimerkki" class="section-content">
+            <h2>Showcase</h2>
+            <pre><code>
+fun begin() {
+	print_int(42);
+}
+
+begin();
+			</code></pre>
+
+			<p>Käännä ja aja:</p>
+
+			<pre><code>
+./compile esimerkki.tin esimerkki
+./esimerkki
+			</code></pre>
+        </div>
+
+        <div id="opas_kieli" class="section-content">
+            <h2>Opas - Ohjelmointikieli</h2>
+            <p>Alla tiivis käytännön opastus tärkeimpiin rakenteisiin.</p>
+			<h3 id="5-1-muuttujat">5.1 Muuttujat</h3>
+			<p>Muuttuja määritellään avainsanalla <code>var</code>:</p>
+			<pre><code class="lang-txt"><span class="hljs-keyword">var</span> x = <span class="hljs-number">10</span>;
+<span class="hljs-keyword">var</span> valmis = <span class="hljs-literal">true</span>;
+<span class="hljs-keyword">var</span> n: <span class="hljs-built_in">Int</span> = <span class="hljs-number">123</span>;
+			</code></pre>
+			<p>Huomioita:</p>
+			<ul>
+			<li>Tyyppimäärittely (<code>: Int</code>, <code>: Bool</code>) on mahdollinen.</li>
+			<li>Käytännössä on suositeltua käyttää eksplisiittisiä tyyppimerkintöjä erityisesti Int/Bool-arvoille.</li>
+			<li>Merkkijonot käyttäytyvät viitteinä (muistiosoitteina), joten niiden kanssa kannattaa välttää turhaa tyyppikikkailua.</li>
+			</ul>
+			<h3 id="5-2-if-else">5.2 If-else</h3>
+			<p>Perusmuoto:</p>
+<pre><code class="lang-txt"><span class="hljs-keyword">if</span> x &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">then</span> {
+	print_int(x);
+} <span class="hljs-keyword">else</span> {
+	print_int(<span class="hljs-number">0</span>);
+}
+			</code></pre>
+			<p>Myös ilman else-haaraa:</p>
+<pre><code class="lang-txt"><span class="hljs-keyword">if</span> <span class="hljs-attr">valmis</span> == <span class="hljs-literal">true</span> <span class="hljs-keyword">then</span> {
+	print_str(<span class="hljs-string">"OK"</span>);
+}
+			</code></pre>
+			<p>Huomioita:</p>
+			<ul>
+			<li>Ehto on binäärioperaatio (<code>[expr] op [expr]</code>), esim. <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code>, <code>==</code>, <code>!=</code>, <code>or</code>.</li>
+			<li>Pidä syntaksi tarkkana: avainsanat <code>then</code> ja lohkot <code>{ ... }</code> ovat olennaisia.</li>
+			</ul>
+			<h3 id="5-3-while-silmukka">5.3 While-silmukka</h3>
+			<p>Perusmuoto:</p>
+			<pre><code class="lang-txt"><span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">while</span> i &lt; <span class="hljs-number">5</span> <span class="hljs-keyword">do</span> {
+	print_int(i);
+	i = i + <span class="hljs-number">1</span>;
+}
+			</code></pre>
+			<p><code>break</code> ja <code>continue</code> ovat tuettuja:</p>
+			<pre><code class="lang-txt"><span class="hljs-keyword">while</span> i &lt; 10 <span class="hljs-keyword">do</span> {
+	i = i + 1;
+	<span class="hljs-keyword">if</span> i == 3 <span class="hljs-keyword">then</span> { <span class="hljs-built_in">continue</span>; }
+	<span class="hljs-keyword">if</span> i == 8 <span class="hljs-keyword">then</span> { <span class="hljs-built_in">break</span>; }
+	print_int(i);
+}
+			</code></pre>
+			<p>Huomio:</p>
+			<ul>
+			<li>Älä yritä varata taulukoita silmukan sisällä (<code>array(...)</code>), koska taulukkomuisti varataan käännöksen aikana.</li>
+			</ul>
+			<h3 id="5-4-n-kyvyysalueet-scope-">5.4 Näkyvyysalueet (scope)</h3>
+			<p>Kieli käyttää lohkokohtaisia näkyvyysalueita:</p>
+			<pre><code class="lang-txt">var <span class="hljs-attr">a</span> = <span class="hljs-number">1</span>;
+<span class="hljs-keyword">if</span> <span class="hljs-attr">a</span> == <span class="hljs-number">1</span> <span class="hljs-keyword">then</span> {
+	var <span class="hljs-attr">b</span> = <span class="hljs-number">2</span>;
+	print_int(b);
+}
+
+print_int(b);
+			</code></pre>
+			<p>Nyt saat virheilmoitukset <code>Line 7: variable b is out of the context!</code>, koska b ei ole määritelty tässä kontekstissa.</p>
+			<p>Eli:</p>
+			<ul>
+			<li>Sisempi lohko näkee ulomman lohkon muuttujat.</li>
+			<li>Ulompi lohko ei näe sisemmässä lohkossa määriteltyjä muuttujia.</li>
+			</ul>
+			<h3 id="5-5-funktiot">5.5 Funktiot</h3>
+			<p>Perusmuoto:</p>
+			<pre><code class="lang-txt"><span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">summa</span><span class="hljs-params">(x, y)</span></span>: <span class="hljs-built_in">Int</span> {
+	<span class="hljs-keyword">return</span> x + y;
+}
+			</code></pre>
+			<p>Käyttö:</p>
+			<pre><code class="lang-txt">var z = summa(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>)<span class="hljs-comment">;</span>
+print_int(<span class="hljs-name">z</span>)<span class="hljs-comment">;</span>
+			</code></pre>
+			<p>Huomioita:</p>
+			<ul>
+			<li>Paluutyyppi on valinnainen (oletus Int), mutta selkeys yleensä paranee kun tyyppi annetaan.</li>
+			<li>Parametrien maksimimäärä on 6.</li>
+			<li>Hyvä käytäntö on kirjoittaa pääohjelma <code>begin()</code>-funktioon ja kutsua se lopussa.</li>
+			</ul>
+			<h3 id="5-6-array-taulukot-">5.6 Array (taulukot)</h3>
+			<p>Taulukko luodaan:</p>
+			<pre><code class="lang-txt"><span class="hljs-keyword">var</span> arr = <span class="hljs-keyword">array</span>(<span class="hljs-number">10</span>);
+			</code></pre>
+			<p>Arvon asetus ja haku:</p>
+			<pre><code class="lang-txt">set(<span class="hljs-name">arr</span>, <span class="hljs-number">0</span>, <span class="hljs-number">42</span>)<span class="hljs-comment">;</span>
+var eka = get(<span class="hljs-name">arr</span>, <span class="hljs-number">0</span>)<span class="hljs-comment">;</span>
+print_int(<span class="hljs-name">eka</span>)<span class="hljs-comment">;</span>
+			</code></pre>
+			<p>Huomioita:</p>
+			<ul>
+			<li>Koon on oltava positiivinen vakio (<code>array(10)</code>), ei muuttuja tai lauseke.</li>
+			<li>Taulukko on viite muistialueeseen: kopiointi <code>var b = arr;</code> tarkoittaa, että molemmat viittaavat samaan taulukkoon.</li>
+			</ul>
+			<h3 id="5-7-structs-rakenteet-">5.7 Structs (rakenteet)</h3>
+			<p>Määrittely:</p>
+			<pre><code class="lang-txt">define <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">HENKILO</span> = </span>{ nimi, ika };
+			</code></pre>
+			<p>Instanssin luonti ja käyttö:</p>
+			<pre><code class="lang-txt">var h = New(<span class="hljs-name">HENKILO</span>)<span class="hljs-comment">;</span>
+write_long(<span class="hljs-name">h</span>, HENKILO-&gt;nimi, <span class="hljs-string">"Ada"</span>)<span class="hljs-comment">;</span>
+write_long(<span class="hljs-name">h</span>, HENKILO-&gt;ika, <span class="hljs-number">28</span>)<span class="hljs-comment">;</span>
+
+print_str(<span class="hljs-name">read_long</span>(<span class="hljs-name">h</span>, HENKILO-&gt;nimi))<span class="hljs-comment">;</span>
+print_int(<span class="hljs-name">read_long</span>(<span class="hljs-name">h</span>, HENKILO-&gt;ika))<span class="hljs-comment">;</span>
+			</code></pre>
+			<p>Huomioita:</p>
+			<ul>
+			<li><code>New(...)</code> näyttää funktiokutsulta, mutta on kielen oma rakenne.</li>
+			<li>Rakenteet käyttävät ajonaikaista heap-muistia.</li>
+			<li>Rakenne kannattaa määritellä ennen käyttöä (ennen instanssien luontia ja niitä käyttäviä funktioita).</li>
+			</ul>
+			<hr>
+			<h2 id="6-yleiset-sudenkuopat-ja-huomiot">6) Yleiset sudenkuopat ja huomiot</h2>
+			<ul>
+			<li>Funktioiden parametrimäärä on rajattu (maksimi 6).</li>
+			<li>Taulukon koko pitää antaa vakiona, koska muistivaraus tehdään käännösaikana.</li>
+			<li>Merkkijonot ovat käytännössä viitteitä muistiosoitteisiin (IntRef-tyyppinen malli), joten käsittele niitä varoen.</li>
+			<li>String-vakion suora palautus voi aiheuttaa ongelmia:<ul>
+			<li>vältä mallia <code>return &quot;teksti&quot;;</code></li>
+			<li>käytä mieluummin muuttujaa tai funktiokutsun tulosta</li>
+			</ul>
+			</li>
+			<li>Jos virheilmoitus tuntuu epämääräiseltä, tarkista ensin:<ul>
+			<li>puolipisteet</li>
+			<li>sulkeiden/parien tasapaino</li>
+			<li>typo/whitespace-kohdat (kieli on joissain kohdissa herkkä muodolle)</li>
+			</ul>
+			</li>
+			</ul>
+			<hr>
+
+        </div>
+
+        <div id="sudenkuopat" class="section-content">
+            <h2>Yleisimmät sudenkuopat</h2>
+            <p>Yleisiä virheitä ja ongelmia, joihin voi kompastua kääntäjää käytettäessä.</p>
+            <ul>
+				<li>Funktioiden parametrimäärä on rajattu (maksimi 6).</li>
+				<li>Taulukon koko pitää antaa vakiona, koska muistivaraus tehdään käännösaikana.</li>
+				<li>Merkkijonot ovat käytännössä viitteitä muistiosoitteisiin (IntRef-tyyppinen malli), joten käsittele niitä varoen.</li>
+				<li>String-vakion suora palautus voi aiheuttaa ongelmia:<ul>
+				<li>vältä mallia <code>return &quot;teksti&quot;;</code></li>
+				<li>käytä mieluummin muuttujaa tai funktiokutsun tulosta</li>
+			</ul>
+			<p><b>Jos virheilmoitus tuntuu epämääräiseltä, tarkista ensin:</b></p>
+			<ul>
+				<li>puolipisteet</li>
+				<li>sulkeiden/parien tasapaino</li>
+				<li>typo/whitespace-kohdat (kieli on joissain kohdissa herkkä muodolle)</li>
+			</ul>
+
+        </div>
+
+        <div id="vinkki" class="section-content">
+            <h2>Pieni vinkki!</h2>
+            <p>Vinkkejä ja parhaita käytäntöjä TinCompin käyttöön.</p>
+            <p>Suositeltu tapa on laittaa pääohjelma <code>begin()</code>-funktioon ja kutsua sitä tiedoston lopussa:</p>
+			<pre><code class="lang-txt"><span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">begin</span></span>() {
+	<span class="hljs-regexp">//</span> pääohjelma
+}
+
+<span class="hljs-keyword">begin</span>();
+			</code></pre>
+			<p>Tämä vähentää joitain harvinaisia tilanteita, joissa virheilmoitukset voivat olla vaikeammin tulkittavia.</p>
+
+        </div>
+
+        <div id="standardikirjasto" class="section-content">
+            <h2>Opas - Standardikirjasto</h2>
+            <p>Pikainen katsaus TinCompin standardikirjastoon ja sen käyttöön.</p>
+<ul>
+<li><strong>str_cmp(s1: IntRef, s2: IntRef): Bool</strong><ul>
+<li>vertaa kahta merkkijonoviitettä. Palauttaa <code>true</code>, jos sisällöt ovat samat, muuten <code>false</code>.</li>
+</ul>
+</li>
+<li><strong>str_cat(s1: IntRef, s2: IntRef): Int</strong><ul>
+<li>yhdistää kaksi merkkijonoa ja palauttaa viitteen uuteen merkkijonoon.</li>
+</ul>
+</li>
+<li><strong>str_len(s1: IntRef): Int</strong><ul>
+<li>palauttaa merkkijonon pituuden.</li>
+</ul>
+</li>
+<li><p><strong>str_clone(s1: IntRef): Int</strong></p>
+<ul>
+<li>kloonaa merkkijonon <code>s1</code> eli luo uuden, itsenäisen merkkijonon samalla sisällöllä.</li>
+</ul>
+</li>
+<li><p><strong>print_str(s: Int)</strong></p>
+<ul>
+<li>tulostaa merkkijonon ja lisää rivinvaihdon loppuun.</li>
+</ul>
+</li>
+<li><strong>print_str2(s: Int)</strong><ul>
+<li>tulostaa merkkijonon ilman rivinvaihtoa.</li>
+</ul>
+</li>
+<li><strong>str_to_int(s: Int): Int</strong><ul>
+<li>muuntaa merkkijonon kokonaisluvuksi.</li>
+</ul>
+</li>
+<li><strong>int_to_str(s: Int): Int</strong><ul>
+<li>muuntaa kokonaisluvun merkkijonoksi.</li>
+</ul>
+</li>
+<li><strong>get_char_from_str(s: Int, index: Int): IntRef</strong><ul>
+<li>palauttaa merkkijonosta <code>s</code> kohdassa <code>index</code> olevan merkin uutena yhden merkin merkkijonona.</li>
+</ul>
+</li>
+<li><strong>input_str(): Int</strong><ul>
+<li>lukee käyttäjän syötteen (stdin) ja palauttaa viitteen syötettyyn merkkijonoon.</li>
+</ul>
+</li>
+<li><strong>create_empty_str(): Int</strong><ul>
+<li>luo tyhjän merkkijonon ja palauttaa viitteen siihen.</li>
+</ul>
+</li>
+</ul>
+<h3 id="8-2-merkkijonojen-k-ytt-k-yt-nn-ss-">8.2 Merkkijonojen käyttö käytännössä</h3>
+<p>Merkkijonot ovat tässä kielessä viitteitä muistiosoitteisiin (IntRef-malli). Käytännössä tämä tarkoittaa:</p>
+<ul>
+<li>käsittele merkkijonoja funktioiden kautta (<code>str_cat</code>, <code>str_cmp</code>, <code>str_len</code>, ...)</li>
+<li>vältä turhaa aritmetiikkaa merkkijonomuuttujilla</li>
+<li>jos tarvitset &quot;alkuarvoksi tyhjän merkkijonon&quot;, käytä <code>create_empty_str()</code></li>
+</ul>
+<p>Esimerkki:</p>
+<pre><code class="lang-txt"><span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">begin</span><span class="hljs-params">()</span></span> {
+    <span class="hljs-keyword">var</span> nimi = create_empty_str();
+    print_str2(<span class="hljs-string">"Anna nimesi: "</span>);
+    nimi = input_str();
+
+    <span class="hljs-keyword">var</span> tervehdys = str_cat(<span class="hljs-string">"Hei "</span>, nimi);
+    print_str(tervehdys);
+
+    <span class="hljs-keyword">if</span> str_cmp(nimi, <span class="hljs-string">"admin"</span>) then {
+        print_str(<span class="hljs-string">"Tunnistettu ylläpitäjäksi"</span>);
+    } <span class="hljs-keyword">else</span> {
+        print_str(<span class="hljs-string">"Tavallinen käyttäjä"</span>);
+    }
+
+    <span class="hljs-keyword">var</span> pituus = str_len(nimi);
+    print_str2(<span class="hljs-string">"Nimen pituus: "</span>);
+    print_int(pituus);
+}
+
+begin();
+</code></pre>
+<h3 id="8-3-t-rke-t-huomiot-merkkijonoista">8.3 Tärkeät huomiot merkkijonoista</h3>
+<ul>
+<li>Vältä suoraa merkkijonovakion palautusta funktiosta (<code>return &quot;teksti&quot;;</code>), koska se voi aiheuttaa ongelmia.</li>
+<li>Käytä palautukseen mieluummin muuttujaa tai funktiokutsun tulosta.</li>
+<li>Jos merkkijonoa pitää yhdistellä paljon, käytä välivaiheissa muuttujia selkeyden vuoksi.</li>
+<li>Muista, että <code>print_str</code> lisää rivinvaihdon, <code>print_str2</code> ei lisää.</li>
+</ul>
+<h3 id="8-4-pikareseptit-yleiset-k-ytt-tapaukset-">8.4 Pikareseptit (yleiset käyttötapaukset)</h3>
+<h4 id="resepti-1-sy-te-vertailu-tulostus">Resepti 1: Syöte -&gt; vertailu -&gt; tulostus</h4>
+<pre><code class="lang-txt">fun begin() {
+    print_str2(<span class="hljs-string">"Anna komento (start/stop): "</span>);
+    var <span class="hljs-keyword">cmd</span><span class="bash"> = input_str();
+</span>
+    if str_cmp(<span class="hljs-keyword">cmd</span><span class="bash">, <span class="hljs-string">"start"</span>) <span class="hljs-keyword">then</span> {
+</span>        print_str(<span class="hljs-string">"Käynnistetään"</span>);
+    } else {
+        if str_cmp(<span class="hljs-keyword">cmd</span><span class="bash">, <span class="hljs-string">"stop"</span>) <span class="hljs-keyword">then</span> {
+</span>            print_str(<span class="hljs-string">"Pysäytetään"</span>);
+        } else {
+            print_str(<span class="hljs-string">"Tuntematon komento"</span>);
+        }
+    }
+}
+
+begin();
+</code></pre>
+<h4 id="resepti-2-sy-te-merkkijonona-muunnos-numeroksi">Resepti 2: Syöte merkkijonona -&gt; muunnos numeroksi</h4>
+<pre><code class="lang-txt"><span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">begin</span><span class="hljs-params">()</span></span> {
+    print_str2(<span class="hljs-string">"Anna kokonaisluku: "</span>);
+    <span class="hljs-keyword">var</span> s = input_str();
+
+    <span class="hljs-keyword">var</span> n = str_to_int(s);
+    <span class="hljs-keyword">var</span> plus_yksi = n + <span class="hljs-number">1</span>;
+
+    print_str2(<span class="hljs-string">"Luku + 1 = "</span>);
+    print_int(plus_yksi);
+}
+
+begin();
+</code></pre>
+<h4 id="resepti-3-numeron-muuttaminen-merkkijonoksi-ja-yhdist-minen">Resepti 3: Numeron muuttaminen merkkijonoksi ja yhdistäminen</h4>
+<pre><code class="lang-txt"><span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">begin</span><span class="hljs-params">()</span></span> {
+    <span class="hljs-keyword">var</span> pisteet = <span class="hljs-number">42</span>;
+    <span class="hljs-keyword">var</span> teksti = str_cat(<span class="hljs-string">"Pisteet: "</span>, int_to_str(pisteet));
+    print_str(teksti);
+}
+
+begin();
+</code></pre>
+<h4 id="resepti-4-yksitt-isen-merkin-poiminta-merkkijonosta">Resepti 4: Yksittäisen merkin poiminta merkkijonosta</h4>
+<pre><code class="lang-txt"><span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">begin</span><span class="hljs-params">()</span></span> {
+    <span class="hljs-keyword">var</span> sana = <span class="hljs-string">"TinComp"</span>;
+    <span class="hljs-keyword">var</span> eka = get_char_from_str(sana, <span class="hljs-number">0</span>);
+    print_str2(<span class="hljs-string">"Ensimmäinen merkki: "</span>);
+    print_str(eka);
+}
+
+begin();
+</code></pre>
+<blockquote>
+<p>Huom: <code>get_char_from_str</code> palauttaa yhden merkin mittaisen merkkijonon (viitteen), ei erillistä char-tyyppiä.</p>
+</blockquote></div></div><script>function showContent(e){for(var t=document.getElementsByClassName("section-content"),n=0;n<t.length;n++)t[n].style.display="none";document.getElementById(e).style.display="block"}showContent("esivaatimukset")</script>
