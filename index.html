@@ -203,6 +203,7 @@ print_int(<span class="hljs-name">read_long</span>(<span class="hljs-name">h</sp
 			<li>String-vakion suora palautus voi aiheuttaa ongelmia:<ul>
 			<li>vältä mallia <code>return &quot;teksti&quot;;</code></li>
 			<li>käytä mieluummin muuttujaa tai funktiokutsun tulosta</li>
+			<li>Funktion tai muuttujan nimi alkaa jollain varatun sanan osamerkkijonolla (esim. varakauset -> "var"). Ei aina kaadu, mutta valitettavasti joskus. Tokenizer on buginen tältä osin</li>
 			</ul>
 			</li>
 			<li>Jos virheilmoitus tuntuu epämääräiseltä, tarkista ensin:<ul>
