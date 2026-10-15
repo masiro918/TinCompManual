@@ -446,16 +446,16 @@ print_int(<span class="hljs-name">read_long</span>(<span class="hljs-name">h</sp
 <li>kloonaa merkkijonon <code>s1</code> eli luo uuden, itsenäisen merkkijonon samalla sisällöllä.</li>
 </ul>
 </li>
-<li><p><strong>print_str(s: Int)</strong></p>
+<li><p><strong>print_str(s: IntRef)</strong></p>
 <ul>
 <li>tulostaa merkkijonon ja lisää rivinvaihdon loppuun.</li>
 </ul>
 </li>
-<li><strong>print_str2(s: Int)</strong><ul>
+<li><strong>print_str2(s: IntRef)</strong><ul>
 <li>tulostaa merkkijonon ilman rivinvaihtoa.</li>
 </ul>
 </li>
-<li><strong>str_to_int(s: Int): Int</strong><ul>
+<li><strong>str_to_int(s: IntRef): Int</strong><ul>
 <li>muuntaa merkkijonon kokonaisluvuksi.</li>
 </ul>
 </li>
@@ -463,16 +463,20 @@ print_int(<span class="hljs-name">read_long</span>(<span class="hljs-name">h</sp
 <li>muuntaa kokonaisluvun merkkijonoksi.</li>
 </ul>
 </li>
-<li><strong>get_char_from_str(s: Int, index: Int): IntRef</strong><ul>
+<li><strong>get_char_from_str(s: IntRef, index: Int): IntRef</strong><ul>
 <li>palauttaa merkkijonosta <code>s</code> kohdassa <code>index</code> olevan merkin uutena yhden merkin merkkijonona.</li>
 </ul>
 </li>
-<li><strong>input_str(): Int</strong><ul>
+<li><strong>input_str(): IntRef</strong><ul>
 <li>lukee käyttäjän syötteen (stdin) ja palauttaa viitteen syötettyyn merkkijonoon.</li>
 </ul>
 </li>
-<li><strong>create_empty_str(): Int</strong><ul>
+<li><strong>create_empty_str(): IntRef</strong><ul>
 <li>luo tyhjän merkkijonon ja palauttaa viitteen siihen.</li>
+</ul>
+</li>
+<li><strong>sys(s: IntRef)</strong><ul>
+<li>tekee komentorivioperaation `s` käyttöjärjestelmässä.</li>
 </ul>
 </li>
 </ul>
